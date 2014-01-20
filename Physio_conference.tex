@@ -1,0 +1,267 @@
+%% Based on a TeXnicCenter-Template by Tino Weinkauf.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HEADER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+
+%% Packages for Graphics & Figures %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx} %%For loading graphic files
+%\usepackage{subfig} %%Subfigures inside a figure
+%\usepackage{tikz} %%Generate vector graphics from within LaTeX
+
+%% Please note:
+%% Images can be included using \includegraphics{filename}
+%% resp. using the dialog in the Insert menu.
+%% 
+%% The mode "LaTeX => PDF" allows the following formats:
+%%   .jpg  .png  .pdf  .mps
+%% 
+%% The modes "LaTeX => DVI", "LaTeX => PS" und "LaTeX => PS => PDF"
+%% allow the following formats:
+%%   .eps  .ps  .bmp  .pict  .pntg
+
+
+%% Math Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{listings}
+\lstset{language=C++}
+\usepackage{lscape} 
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\newtheorem*{remark}{Remark}
+%\usepackage{landscape}
+\usepackage{xspace}
+\usepackage{color}
+\textwidth = 450pt
+\def\fxnote#1{\marginpar{\textcolor{green}{#1}}}
+\def\fxwarning#1{\marginpar{\textcolor{red}{#1}}}
+\usepackage[a4paper]{geometry}
+%% Line Spacing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{setspace}
+%\singlespacing        %% 1-spacing (default)
+%\onehalfspacing       %% 1,5-spacing
+%\doublespacing        %% 2-spacing
+
+
+%% Other Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{a4wide} %%Smaller margins = more text per page.
+%\usepackage{fancyhdr} %%Fancy headings
+%\usepackage{longtable} %%For tables, that exceed one page
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Remarks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% TODO:
+% 1. Edit the used packages and their options (see above).
+% 2. If you want, add a BibTeX-File to the project
+%    (e.g., 'literature.bib').
+% 3. Happy TeXing!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Options / Modifications
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% common reference commands
+\newcommand{\eqt}[1]{Eq.~(\ref{#1})}                     % equation
+\newcommand{\fig}[1]{Fig.~\ref{#1}}                      % figure
+\newcommand{\tbl}[1]{Table~\ref{#1}}                     % table
+\newcommand{\sect}[1]{Section~\ref{#1}}                     % section
+\newcommand{\subsect}[1]{Subsection~\ref{#1}}                     % subsection
+\newcommand{\app}[1]{Appendix~\ref{#1}}                     % appendix
+
+\newcommand{\ie}{i.e.,\@\xspace}
+\newcommand{\eg}{e.g.,\@\xspace}
+\newcommand{\psc}[1]{{\sc {#1}}}
+\newcommand{\rs}{\psc{R7}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%\pagestyle{empty} %No headings for the first pages.
+
+
+%% Title Page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ==> Write your text here or include other files.
+
+%% The simple version:
+%\title{Entropy viscosity method for fluid flows: application to the $1$D Euler equations with source terms for subsonic and transonic flows. \\
+%Report to the INL.}
+%\author{Marc-Olivier Delchini\footnote{Nuclear Engineering Department 
+%Texas A\&M University 3133 TAMU College Station, TX 77843-3133, delchinm@neo.tamu.edu}, Ray Berry\footnote{Idaho National Laboratory 
+%P.O. Box 1625, Idaho Falls, ID 83415-3840 Ray.Berry@inl.gov } and Jean C. Ragusa\footnote{Nuclear Engineering Department 
+%Texas A\&M University 3133 TAMU College Station, TX 77843-3133, jean.ragusa@tamu.edu }}
+%\date{} %%If commented, the current date is used.
+%\maketitle
+%\newpage
+\addcontentsline{toc}{section}{Abstract}
+\begin{abstract}
+This paper aims at extending the entropy viscosity method \cite{valentin, jlg1, jlg2} when solving the $1$-D Euler equations \cite{Toro} with source terms. 
+The entropy viscosity method has been successfully applied to hyperbolic systems of equations such as Burgers equation and Euler
+equations. The method consists in adding dissipative terms to the governing equations, where a viscosity coefficient modulates
+the amount of dissipation.
+This viscosity coefficient is based on the entropy production that occurs in discontinuities and shocks present in hyperbolic systems.\\
+By adding source terms to Euler equations, the entropy viscosity method needs to be modified in order to account for the entropy production due to the source terms. Tests are run for Pressurized Nuclear Reactor type under the Moose framework \cite{Moose} using Continuous Galerkin Finite Element Method and a second-order temporal implicit scheme, and allow to validate our approach.
+%The entropy viscosity method has been implemented using a {\em continuous finite element discretization} and our results demonstrate that it has the ability to efficiently smooth out oscillations and accurately resolve shocks.\\ 
+%The scope of this report is to introduce the entropy viscosity method with its main features and to show that it can 
+%effectively be employed to solve 1-D Euler equations with variable area and with source terms (friction force and wall heat source) within the MOOSE framework \cite{Moose}. Two equations of state are considered: the Ideal 
+%Gas and Stiffened Gas Equations Of State. Results are provided for time implicit schemes only.\\
+%Typical Riemann problems are run to demonstrate some of the features of the entropy viscosity method . Then, a 
+%1-D convergent-divergent
+%nozzle is considered with open boundary conditions. The correct steady state is reached for the liquid and gas phases with a 
+%time implicit scheme. This report ends with some results obtained by including source terms to the $1$D Euler equations. The entropy viscosity method correctly behaves in every problem considered.
+\end{abstract}
+\marginparwidth = 10pt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Entropy viscosity method: a review for single-phase Euler equations:}
+\label{sec:section1}
+In this section, the entropy-based viscosity method \cite{valentin, jlg1, jlg2} is recalled for the multi-D Euler equations \cite{Toro} and do not include source terms. The entropy viscosity method consists of adding dissipative terms, with a viscosity coefficient modulated by the entropy production which allows high-order accuracy when the solution gets smooth. Thus, two questions arise: (i) how are the viscosity dissipative terms derived and (ii) how to numerically compute the entropy production. Answers to the first question can be found in \cite{jlg} by Guermond et al., that details the proof leading to the derivation of the artificial dissipative terms (\eqt{eq:euler_visc}) consistent with the entropy minimum principle theorem. The viscous regularization obtained is valid for any equation of state as long as the opposite of the physical entropy function is convex.
+\begin{equation}
+\label{eq:euler_visc}
+\left\{ 
+\begin{array}{lll}
+\partial_t \left( \rho \right) + \nabla \cdot \left( \rho \vec{u} \right) = \nabla \cdot \left( \kappa \nabla \rho \right) \\
+\partial_t \left( \rho \vec{u} \right) + \nabla \cdot \left( \rho \vec{u} \otimes \vec{u} + P I \right) = \nabla \left( \mu \rho \nabla \vec{u}  + \kappa \vec{u} \otimes \nabla \rho \right)  \\
+\partial_t \left( \rho E \right) + \nabla \cdot \left[ \vec{u} \left( \rho E + P \right) \right] = \nabla \cdot \left( \kappa \nabla \left( \rho e \right) + \frac{1}{2}|| \vec{u} ||^2 \kappa \nabla \rho +  \rho \vec{u} \mu \nabla \vec{u}  \right) \\
+P = P\left( \rho, e \right)
+\end{array}
+\right.
+\end{equation}
+where $\kappa$ and $\mu$ are local positive viscosity coefficients. \\
+The existence of a specific entropy $s$, function of the density $\rho$ and the internal energy $e$ is assumed. Convexity of $-s$ with respect to $e$ and $1/\rho$ is required, along with the following equality verified by the partial derivatives of $s$ : $P \partial_e s + \rho^2 \partial_{\rho} s = 0$.\\
+One crucial step remains a definition for the local viscosity coefficients $\mu$ and $\kappa$. In the current version of the method, $\kappa$ and $\mu$ are set equal, so that the above viscous regularization (\eqt{eq:euler_visc}) is equivalent to the parabolic regularization \cite{Parabolic}. The current definition includes a first-order viscosity coefficient referred to with the subscript $max$, and a second-order viscosity coefficient referred to with the subscript $e$. The first-order viscosity coefficients $\mu_{max}$ and $\kappa_{max}$ are proportional to the local largest eigenvalue $|| \vec{u} || + c $ and equivalent to an upwind-scheme, when used, which is known to be over-dissipative and monotone \cite{Toro}: 
+\begin{equation}
+\label{eq:equation15}
+\mu_{max}(\vec{r}, t) = \kappa_{max}(\vec{r}, t) = \frac{h}{2} \left( || \vec{u} || + c \right),
+\end{equation}
+where $h$ is the grid size. \\
+The second-order viscosity coefficients $\kappa_e$ and $\mu_e$ are set proportional to the entropy production that is evaluated by computing the local entropy residual $D_e$. It also includes the jump of the entropy flux $J$ that will allow to detect any discontinuities other than shocks:
+\begin{equation}
+\label{eq:ent_visc_coeff}
+\mu_e(\vec{r},t) = \kappa_e(\vec{r},t) = h^2 \frac{\max\left( | D_e(\vec{r},t) |, J \right)}{|| s - \bar{s} ||_{max}} \text{ with } D_e(\vec{r}, t) = \partial_t s + \vec{u} \cdot \nabla s
+\end{equation}
+where $|| \cdot ||_{max}$ and $\bar{\cdot}$ denote the infinite norm operator and the average operator over the entire computational domain, respectively. The definition of the jump $J$ is discretization-dependent and examples of definition can be found in \cite{valentin} for DGFEM. The denominator $|| s - \bar{s} ||_{max}$ is used for dimensionally purpose and should not be of the same order as $h$, on penalty of loosing the high-order accuracy. Currently, there are no theoretical justification for choosing the denominator. \\
+The definition of the viscosity coefficients $\mu$ and $\kappa$ is function of the first- and second-order viscosity coefficients as follows:
+\begin{equation}
+\label{eq:mu}
+\mu(\vec{r},t) = \min\left( \mu_e(\vec{r},t), \mu_{max}(\vec{r},t) \right) \text{ and } \kappa(\vec{r},t) = \min\left( \kappa_e(\vec{r},t), \kappa_{max}(\vec{r},t) \right);
+\end{equation}
+This definition allows the following properties.
+In shock regions, the second-order viscosity coefficient experiences an infinite peak because of the entropy production, and thus, saturate to the first-order viscosity that is known to be over-dissipative and will smooth out oscillations. Anywhere else, the entropy production being small, the viscosity coefficients $\mu$ and $\kappa$ are of order $h^2$.\\
+Using the above definition of the entropy-based viscosity method, high-order accuracy was demonstrated and good results were obtained with 1-D Sod shock tubes and various 2-D tests \cite{valentin, jlg1, jlg2}.\\
+In this paper, it is proposed to use a different expression for the entropy residual, function of the pressure and the density \eqt{eq:new_ent_res}. 
+\begin{equation}
+\label{eq:new_ent_res}
+D_e(\vec{r},t) = \partial_t s + \vec{u} \cdot \nabla s = \frac{s_e}{P_e} \underbrace{\left( \frac{d P}{dt} - c^2 \frac{d \rho}{dt} \right)}_{\tilde{D}_e(\vec{r},t)},
+\end{equation}
+where $\frac{d \cdot}{dt}$ denotes the material or total derivative, and $P_e$ is the partial derivative of the pressure $P$ with respect to the internal energy $e$. 
+This is motivated by the following observation: the current definition of the viscosity coefficients requires an analytical expression of the entropy function $s$ which can be difficult to obtain when dealing with complex equations of states, and, does not seem to be adapted to low Mach flows that are known to be isentropic: the entropy residual $D_e(\vec{r},t)$ and the denominator $|| s - \bar{s} ||_{max}$ will both tend to zero leading to an undetermined form. Since $D_e(\vec{r},t)$ and $\tilde{D}_e(\vec{r},t)$ are proportional to each other, the definition of the viscosity coefficients $\mu$ and $\kappa$ can rely on $\tilde{D}_e(\vec{r},t)$ without affecting the heart of the entropy viscosity method as follows: 
+\begin{equation}
+\label{eq:ent_visc_coeff2}
+\mu_e(\vec{r},t) = \kappa_e(\vec{r},t) = h^2 \frac{\max\left( | \tilde{D}_e(\vec{r},t) |, J \right)}{(1-M) \rho c^2 + M \rho |\vec{u}|^2}
+\end{equation}
+The denominator is now changed as shown in \eqt{eq:ent_visc_coeff2} and is of the same dimension as the pressure. It is function of the Mach number $M$, the speed of sound $c$, the density $\rho$ and the norm of the velocity vector $|\vec{u}|^2$, and ensure consistency when dealing with low Mach flows. The jump $J$,  is chosen to be proportional to the jump of the pressure and density gradients at the interfaces:
+\begin{equation}
+\label{eq:equation23}
+J_{i+1/2} = |\vec{u}|_{i+1/2} \max \left( [[ \nabla P \cdot \vec{n} ]]_{i+1/2}, c^2 [[ \nabla \rho \cdot \vec{n} ]]_{i+1/2} \right) \text{ with } [[ \cdot ]] = |(\nabla \cdot)_i -  (\nabla \cdot)_{i+1}| \cdot \vec{n},
+\end{equation}
+where $i+1/2$ denotes the interface between cells $i$ and $i+1$, and $\vec{n}$ its outward normal.
+The definition of the viscosity coefficients $\mu$ and $\kappa$ remain unchanged, as well as the dissipative terms.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Extension of the entropy viscosity method to include friction and gravity forces, and sink/source terms:}
+This section shows that the entropy-viscosity method can be modified in order to be still valid when considering source terms with the $1$-D Euler equations. The $1$-D Euler equations are now modified by adding the gravity and the wall friction forces in the momentum equation, and the wall-heat source in the energy equation as shown in \eqt{eq:equation19}. The artificial dissipative terms are not included in this study since they are independent of the source terms.
+\begin{equation}
+\label{eq:equation19}
+\left\{
+\begin{array}{lll}
+\partial_t \rho + \nabla_x  \cdot \left( \rho u \right) = 0 \\
+\partial_t \left( \rho u \right) + \nabla_x \cdot \left( \rho u^2 + P \right) =  - \frac{A}{2 D_h} \rho f |u| u + \rho g \\
+\partial_t \left( \rho E \right) + \nabla_x \cdot \left[ u  \left( \rho E + P \right) \right] = a_w h_w \left( T - T_w \right)
+\end{array}
+\right.
+\end{equation}
+where $f$ is a positive friction factor, $g$ is the gravity constant and $D_h$ is the hydraulic diameter given by $D_h = 4A/p$ (A and p being the geometry cross-section and wetted perimeter, respectively). The variables $a_w$, $T_w$ and $h_w$ denote the heated surface, the wall temperature and the wall heat transfer, respectively.
+The reader will notice that the wall friction does not affect the total energy equation. The velocity at the wall being zero, there is no power induced by the wall friction forces. \\
+Because the entropy residual method relies on the sign of the entropy residual, we have to understand how the source terms affect the entropy residual. A way to achieve this, is to derive the entropy residual by including the source terms. Following the same steps detailed in \cite{jlg}, the following entropy residual is obtained:
+\begin{equation}
+\label{eq:equation20}
+\rho \frac{ds}{dt} = \rho \frac{s_e}{P_e}\left( \frac{dP}{dt} - c^2 \frac{d \rho}{dt} \right) = s_e \left( a_w h_w (T - T_w) + \frac{\rho}{2 D_h} f |u| u^2 \right)
+\end{equation}
+In order to prove the entropy minimum principle, the sign of the right-hand side needs to be studied. Since $s_e$ is positive by definition \cite{jlg}, the sign will depend upon the terms inside the brackets. A quick study of the terms in the right hand-side of \eqt{eq:equation20}, concludes that the friction term is always positive and therefore will not affect the sign of the entropy residual. However, the sign of the wall heat source term can be either positive or negative, and thus, needs to be included in the definition of the entropy viscosity coefficients $\mu_e$ and $\kappa_e$ in order to account for the entropy production due to the heating/cooling:
+\begin{equation}
+\label{eq:equation21}
+\mu_e(\vec{r},t) = \kappa_e(\vec{r},t) = h^2 \frac{\max\left( | \tilde{D}_e(\vec{r},t) |, | D_w(\vec{r},t) |, J \right)}{(1-M) \rho c^2 + M \rho |\vec{u}|^2} \text{ with } D_w(\vec{r},t) = a_w h_w (T - T_w)
+\end{equation}
+The definitions of the first order viscosity coefficients given in \eqt{eq:equation15} remain unchanged, as well as the ones for the viscosity coefficients $\mu$ and $\kappa$ (\eqt{eq:mu}).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Numerical results for a Pressurized Nuclear Reactor PWR):}
+Numerical tests were performed for a $1$-D pipe of cross-section $A = 7.854e-5$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the wall temperature $T_w$ is set to a constant value of $600$ K, the heat transfer coefficient $h_w$ is time and space dependent \eqt{eq:equation24}, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ m, and lastly, the friction factor is constant and equal to $0.01$.
+\begin{equation}
+\label{eq:equation24}
+h_w(x,t) = h_{w,0}(1-e^{-t})\sin \left( \frac{\pi}{2L} x\right) \text{ with } h_{w,0} = 5.33 \cdot 10^4 W / m.
+\end{equation}
+Mass inflow ($\rho u = 3600$ $kg/(m^2 s)$ and $T = 559.15$ K) and static pressure ($P_s = 155$ bar) boundary conditions are used for the inlet and outlet, respectively. The Stiffened Gas Equation of State (SGEOS) is used \cite{SGEOS} with following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151e3$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached around $t=30$ s with a time step of $\Delta t = 1$ s. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions and future work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\addcontentsline{toc}{section}{Bibliography}
+\begin{thebibliography}{7}
+    
+  \bibitem{Moose}
+  \emph{A parallel computational framework for coupled systems of nonlinear equations},
+  D. Gaston, C. Newsman, G. Hansen and D. Lebrun-Grandie, Nucl. Eng. Design, vol 239, pp 1768-1778, 2009.
+  
+  \bibitem{valentin}
+  \emph{Implementation of the entropy viscosity method with the discontinuous Galerkin method},
+  Valentin Zingan, Jean-Luc Guermond, Jim Morel, Bojan Popov, Volume 253, 1 January 2013, Pages 479-490
+  
+    \bibitem{jlg1}
+  {\em Entropy viscosity method for nonlinear conservation laws}, 
+  Jean-Luc Guermond, R. Pasquetti, B. Popov, J. Comput. Phys., 230 (2011) 4248-4267.
+  
+    \bibitem{jlg2}
+  {\em Entropy Viscosity Method for High-Order Approximations of Conservation Laws}, 
+  J-L. Guermond, R. Pasquetti, 
+  Lecture Notes in Computational Science and Engineering, Springer, Volume 76, (2011) 411-418.
+  
+  \bibitem{jlg}
+  \emph{Viscous regularization of the Euler equations and entropy principles},
+  Jean-Luc Guermond and Bojan Popov, under review.
+  
+    \bibitem{Parabolic}
+  \emph{On positivity preserving finite volume schemes for Euler equations},
+  Perthane B. and Shu C-W., Numer. Math., 73(1):119-130, 1996.
+  
+  \bibitem{SGEOS}
+  \emph{Elaborating equation of state for a liquid and its vapor for two-phase flow models.}
+  O. LeMetayer, J. Massoni, R. Saurel, International Journal of Thermal Science 43 (2004) 265-276.
+
+\bibitem{Toro}
+  \emph{Riemann Solvers and numerical methods for fluid dynamics.}
+  E.F. Toro, $2^{nd}$ Edition, Springer.  
+  
+  %\bibitem{LowMach}
+    %\emph{Preconditioned techniques in computational fluid dynamics.}
+  %E.Turkel, Annu. Rev. Fluid Mech. (1999) 31:385-416.  
+  
+%\bibitem{SEM}
+  %\emph{The discrete equation method (DEM) for fully compressible, two-phase flows in ducts of spatially varying cross-section.}
+  %R. Berry, R. Saurel, O. LeMetayer,
+  %Nuclear Engineering and Design, 240 (2010) 3797-3818.
+  \end{thebibliography}
+\end{document}
