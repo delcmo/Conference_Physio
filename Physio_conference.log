@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 JAN 2014 14:15
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 JAN 2014 14:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -597,10 +597,6 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 492.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 492.
 Package rerunfilecheck Info: File `Physio_conference.out' has not changed.
 (rerunfilecheck)             Checksum: 914150283DC5929F226D67E9A0E5B496;413.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 492.
  ) 
 Here is how much of TeX's memory you used:
@@ -624,7 +620,7 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/
 2/texmf-dist/fonts/type1/public/tex-gyre/qtmb.pfb></usr/local/texlive/2012/texm
 f-dist/fonts/type1/public/tex-gyre/qtmr.pfb></usr/local/texlive/2012/texmf-dist
 /fonts/type1/public/tex-gyre/qtmri.pfb>
-Output written on Physio_conference.pdf (8 pages, 568213 bytes).
+Output written on Physio_conference.pdf (8 pages, 568251 bytes).
 PDF statistics:
  209 PDF objects out of 1000 (max. 8388607)
  177 compressed objects within 2 object streams
