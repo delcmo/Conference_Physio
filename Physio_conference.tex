@@ -97,7 +97,7 @@
 %------------------------------------------------------------------------------
 % Define title. Use all CAPITALS.
 %------------------------------------------------------------------------------
-\title{Extension of the Entropy Viscosity Method to Flows with Friction and Source Terms}
+\title{Extension of the Entropy Viscosity Method to Flows with Friction Forces and Source Terms}
 %
 % ...and authors
 %
@@ -160,15 +160,14 @@
 \maketitle
 
 \begin{abstract}
-This paper aims at extending the entropy viscosity method \cite{valentin, jlg1, jlg2} when solving the $1$-D Euler equations \cite{Toro} with source terms. 
+In this paper, we extend the entropy viscosity method \cite{valentin, jlg1, jlg2} to $1$-D Euler equations with source terms present. 
 The entropy viscosity method has been successfully applied to hyperbolic systems of equations such as Burgers equation and Euler
-equations. The method consists in adding dissipative terms to the governing equations, where a viscosity coefficient modulates
-the amount of dissipation.
-This viscosity coefficient is based on the entropy production that occurs in discontinuities and shocks present in hyperbolic systems.\\
-By adding source terms to Euler equations, the entropy viscosity method needs to be modified in order to account for the entropy production due to the source terms. Tests are run for Pressurized Nuclear Reactor type under the Moose framework \cite{Moose} using Continuous Galerkin Finite Element Method and a second-order temporal implicit scheme, and allow to validate our approach.
+equations. It method consists in adding dissipative terms to the governing equations so as to ensure the entropy minimum principle. The dissipative terms contain a viscosity coefficient that modulates locally the amount of dissipation.
+This viscosity coefficient is based on the entropy production that occurs in discontinuities and shocks present in hyperbolic systems.
+By adding source terms to Euler equations (friction and gravity forces to the momentum equation and heat source/sink int he energy equation), the entropy viscosity method needs to be modified in order to account for the entropy production due to these terms. Tests are run for a 1D Pressurized Water Reactor channel using the MOOSE framework \cite{Moose}. the equation are discretized with a standard continuous Finite Element Method and a second-order temporal implicit scheme.
 \end{abstract}
 
-\keywords{Entropy-based viscosity scheme, Euler equations}
+\keywords{Entropy-based viscosity scheme, Euler equations with source terms, viscous regularization}
 
 %------------------------------------------------------------------------------
 %
@@ -176,8 +175,19 @@ By adding source terms to Euler equations, the entropy viscosity method needs to
 \section{Introduction}
 \label{sect::intro}
 
+Hyperbolic systems of equations are challenging to solve numerically, due to the presence of shocks. Godunov upwind schemes are overly
+dissipative and only first-order accurate, while higher order methods need flux  limiters to prevent unphysical oscillations. Recently,
+a new technique to stabilize hyperbolic equations has been introduced \cite{valentin, jlg1, jlg2} . 
+It requires adding artificial dissipation terms to the equations while ensuring that the entropy minimum principle remains satisfied. 
+This technique, coined entropy viscosity method, is independent of the spatial discretization and thus can be used with a standard 
+Galerkin Finite Element Method (FEM). Many FEM software possess advanced functionalities for continuous FEM (e.g., deal.ii, libmesh).
+We have developed our fluid solver with Idaho National Laboratory's MOOSE framework \cite{Moose}, with the goal of applying the entropy 
+viscosity method to fluid flow problems for nuclear reactor applications. Therefore, it is crucial to stress the capabilities of the method
+beyond Euler equations. Here, we analyze the implication of adding wall friction, gravity, and heat source/sink to the conservation equations.
+A 1D channel, with conditions representative of the ones of a PWR, is used in our numerical tests. This test case also presents the challenge
+of being in the low-Mach limit, an asymptotic region not yet tested with the entropy viscosity method. In Section~\ref{sec:section1}, we recall
+the fundamentals of the entropy viscosity method.  Its extension to Euler equations with friction forces, gravity forces, and heat sources/sinks is presented in Section~\ref{sec:ext}. Numerical results are provided in Section~\ref{sec:results}.
 
-aaa
 
 %------------------------------------------------------------------------------
 %
@@ -256,6 +266,7 @@ The definition of the viscosity coefficients $\mu$ and $\kappa$ remain unchanged
 %
 %------------------------------------------------------------------------------
 \section{Extension of the entropy viscosity method to include friction, gravity, and sink/source terms}
+\label{sec:ext}
 
 Next, we show that the entropy viscosity method can be modified to retain it validity when adding source terms to the $1$-D Euler equations. Gravity and the wall friction forces are added in the momentum equation and a wall-heat source is supplied in the energy equation, as shown in \eqt{eq:equation19}. The artificial dissipative terms were omitted.
 \begin{equation}
@@ -287,7 +298,7 @@ The definitions of the first order viscosity coefficients given in \eqt{eq:equat
 %
 %------------------------------------------------------------------------------
 \section{Numerical results for a Pressurized Nuclear Reactor PWR}
-\label{sect::results}
+\label{sec:results}
 
 Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the wall temperature $T_w$ is set to a constant value of $600$ K, the heat transfer coefficient $h_w$ is time and space dependent, given in \eqt{eq:equation24}, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$.
 \begin{equation}
@@ -299,30 +310,30 @@ For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3600$
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Pressure.png}}
+\includegraphics[scale=0.4]{plots/Pressure.png}
 \caption{PWR test case: pressure axial profile}
 \label{fig:Pressure}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Temperature.png}}
+\includegraphics[scale=0.4]{plots/Temperature.png}
 \caption{PWR test case: Temperature axial profile}
 \label{fig:Temperature}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Velocity.png}}
+\includegraphics[scale=0.4]{plots/Velocity.png}
 \caption{PWR test case: Velocity axial profile}
 \label{fig:Velocity}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Viscosity.png}}
+\includegraphics[scale=0.4]{plots/Viscosity.png}
 \caption{PWR test case: Viscosity axial profile}
 \label{fig:Viscosity}
 \end{figure}
 
-This paragraph aims at showing why the first-order viscosity becomes ill-scaled in the low Mach limit by considering the continuity equation with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
+This paragraph aims at explaining why the first-order viscosity becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit for the continuity equation written with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations as well. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
 \begin{equation}
 \rho = \tilde{\rho} \rho^* \text{, } u = \tilde{u} u^* \text{, } x = \tilde{x} L \text{, } t = \tilde{t} \frac{u^*}{L} \text{ and } \kappa = \tilde{\kappa} \kappa^* 
 \end{equation}
@@ -331,14 +342,17 @@ Using the above definition, the continuity equation yields:
 \label{eq:cont_proof}
 \partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \frac{k^*}{L \vec{u^*}}  \tilde{\nabla}  \cdot  \left( \tilde{\kappa}  \tilde{\nabla} \tilde{\rho} \right)
 \end{equation}
-It remains to define $k^*$ that depends upon using the first- or second-order viscosity coefficient: when using the first-order viscosity (\eqt{eq:equation15}), an expression for $\kappa^*$ is: $\kappa^* = \frac{L}{2}\left( \vec{u^*} + c^* \right)$. By substituting the definition of $\kappa^*$ into \eqt{eq:cont_proof}, the following expression is obtained:
+The coefficient $k^*$ depends upon using the first- or entropy-order viscosity coefficient: when using the first-order viscosity (\eqt{eq:equation15}), an expression for $\kappa^*$ is: $\kappa^* = \frac{L}{2}\left( \vec{u^*} + c^* \right)$. By substituting this definition into \eqt{eq:cont_proof}, the following expression for the scaled continuity equation is obtained:
 \begin{equation}
 \partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) = \left( 1 + \frac{1}{M^*} \right)  \tilde{\nabla} \cdot \left(\tilde{\kappa}\tilde{\nabla} \tilde{\rho} \right)
 \end{equation}
-where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipative term will become ill-scaled and alter the physical solution. On the other hand, when using the entropy-viscosity coefficient \eqt{eq:ent_visc_coeff} in the low Mach limit with $\tilde{P} = \rho^* (c^2)^* P$, the dissipative term is well-scaled:
+where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipative term will become ill-scaled and will alter the solution greatly
+when using the first-order viscosity. However, when employing the entropy-viscosity coefficient \eqt{eq:ent_visc_coeff} in the low Mach limit with 
+$\tilde{P} = \rho^* (c^2)^* P$, the dissipative term is well-scaled:
 \begin{equation}
-\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \tilde{\nabla} \cdot  \left(\tilde{\kappa}\tilde{\nabla}  \tilde{\rho} \right)
+\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \tilde{\nabla} \cdot  \left(\tilde{\kappa}\tilde{\nabla}  \tilde{\rho} \right).
 \end{equation}
+We can see that it is therefore critical to evaluate and, if needed adapt, the definition of the viscosity coefficients employed with the dissipative terms in a wide range of flow speeds.
 
 %------------------------------------------------------------------------------
 %
@@ -346,10 +360,12 @@ where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipa
 \section{Conclusions} 
 \label{sect::ccl}
 
-    show how the entropy residual is modified when accounting for source terms. Also modified the definition of the entropy viscosity coefficients accordingly.
-    show that artificial dissipative terms become ill-scaled when using the first-order viscosity coefficient. Does not happen with the entropy viscosity coefficient.
-    results are provided for PWR type and show good agreement with the prediction in the low Mach limit. The artificial dissipative terms do not alter the physical solution when the second-order viscosity coefficient is used. However, as predicted, the solution with the first-order viscosity is no correct.
-    the steady-state solution is correctly resolved even with few cells.
+We have extended the entropy viscosity method to fluid conservation equations (Euler equations) that contains terms pertaining to wall friction, gravity, and heat source/sink. This was achieved by verifying that the entropy minimum principle is still verified, provided that the definition of the entropy residual be amended to include the contribution of the heat source/sink terms. 
+
+We have applied the newly adapted technique to a 1D pipe problem representative of a PWR channel under normal operating conditions. The artificial dissipative terms do not alter the physical solution when the higher-order viscosity coefficient is used. However, the solution with the first-order viscosity is no correct.
+The first-order viscosity definition resulted in that term being ill-scaled in the low-Mach limit. However, the entropy viscosity coefficient did not show such ill-scaling as Mach $\rightarrow 0$ .
+
+The steady-state solution is correctly resolved even with few spatial cells using a continuous finite element approach implement in the MOOSE software.
 
 %------------------------------------------------------------------------------
 %
