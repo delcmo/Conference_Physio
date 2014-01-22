@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 JAN 2014 14:30
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 JAN 2014 09:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -602,7 +602,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 492.
 Here is how much of TeX's memory you used:
  8339 strings out of 493488
  124643 string characters out of 3141326
- 232588 words of memory out of 3000000
+ 233588 words of memory out of 3000000
  11481 multiletter control sequences out of 15000+200000
  46423 words of font info for 51 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -620,7 +620,7 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/
 2/texmf-dist/fonts/type1/public/tex-gyre/qtmb.pfb></usr/local/texlive/2012/texm
 f-dist/fonts/type1/public/tex-gyre/qtmr.pfb></usr/local/texlive/2012/texmf-dist
 /fonts/type1/public/tex-gyre/qtmri.pfb>
-Output written on Physio_conference.pdf (8 pages, 568251 bytes).
+Output written on Physio_conference.pdf (8 pages, 568576 bytes).
 PDF statistics:
  209 PDF objects out of 1000 (max. 8388607)
  177 compressed objects within 2 object streams
