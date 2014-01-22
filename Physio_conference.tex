@@ -243,7 +243,7 @@ This definition possesses the following properties.
 In shock regions, the higher-order viscosity coefficient exhibits large values because of the entropy production, and thus, saturates to the over-dissipative first-order viscosity and will smooth out oscillations. Everywhere else, the entropy production being negligible, the viscosity coefficients $\mu$ and $\kappa$ are of order $h^2$ and small.\\
 Using the above definition of the entropy-based viscosity method, high-order accuracy was demonstrated and good results were obtained with 1-D Sod shock tubes and various 2-D tests \cite{valentin, jlg1, jlg2}.
 
-In this paper, we modified the expression for the entropy residual (usign chain rule) so as to make it function of pressure and  density \eqt{eq:new_ent_res}. 
+In this paper, we modified the expression for the entropy residual (using chain rule) so as to make it function of pressure and  density \eqt{eq:new_ent_res}. 
 \begin{equation}
 \label{eq:new_ent_res}
 D_e(\vec{r},t) = \partial_t s + \vec{u} \cdot \nabla s = \frac{s_e}{P_e} \underbrace{\left( \frac{d P}{dt} - c^2 \frac{d \rho}{dt} \right)}_{\tilde{D}_e(\vec{r},t)},
@@ -274,15 +274,15 @@ Next, we show that the entropy viscosity method can be modified to retain it val
 \left\{
 \begin{array}{lll}
 \partial_t \rho + \nabla_x  \cdot \left( \rho u \right) = 0 \\
-\partial_t \left( \rho u \right) + \nabla_x \cdot \left( \rho u^2 + P \right) =  - \frac{A}{2 D_h} \rho f |u| u + \rho g \\
-\partial_t \left( \rho E \right) + \nabla_x \cdot \left[ u  \left( \rho E + P \right) \right] = a_w h_w \left( T - T_w \right)
+\partial_t \left( \rho u \right) + \nabla_x \cdot \left( \rho u^2 + P \right) =  - \frac{A}{2 D_h} \rho f |u| u - \rho g \\
+\partial_t \left( \rho E \right) + \nabla_x \cdot \left[ u  \left( \rho E + P \right) \right] = a_w h_w \left( T - T_w \right) - \rho g u
 \end{array}
 \right.
 \end{equation}
 $f$ is a positive friction factor, $g$ is the gravity constant, and $D_h$ is the hydraulic diameter given by $D_h = 4A/p$ (A and p being the geometry cross-section and wetted perimeter, respectively). The variables $a_w$, $T_w$ and $h_w$ denote the heated surface, the wall temperature, and the wall heat transfer, respectively.
 Wall friction does not affect the total energy equation because  the velocity at the wall is zero and thus no power is induced by the wall friction forces. 
 
-Because the entropy residual method relies on the sign of the entropy residual, we need to understand how source terms may affect the entropy residual. In order to achieve this, one can repeat the derivation of the entropy residual,  with source terms included. Following the same steps detailed in \cite{jlg}, the following entropy residual is obtained:
+Because the entropy residual method relies on the sign of the entropy residual, we need to understand how source terms may affect the entropy residual. In order to achieve this, one can repeat the derivation of the entropy residual,  with source terms included. Following the same steps detailed in \cite{jlg}, the following entropy residual is obtained (the gravity dependent terms cancel out):
 \begin{equation}
 \label{eq:equation20}
 \rho \frac{ds}{dt} = \rho \frac{s_e}{P_e}\left( \frac{dP}{dt} - c^2 \frac{d \rho}{dt} \right) = s_e \left( a_w h_w (T - T_w) + \frac{\rho}{2 D_h} f |u| u^2 \right) .
@@ -340,11 +340,11 @@ This paragraph aims at explaining why the first-order viscosity becomes ill-scal
 Using the above definition, the continuity equation yields:
 \begin{equation}
 \label{eq:cont_proof}
-\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \frac{k^*}{L \vec{u^*}}  \tilde{\nabla}  \cdot  \left( \tilde{\kappa}  \tilde{\nabla} \tilde{\rho} \right)
+\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \frac{k^*}{L u^*}  \tilde{\nabla}  \cdot  \left( \tilde{\kappa}  \tilde{\nabla} \tilde{\rho} \right)
 \end{equation}
 The coefficient $k^*$ depends upon using the first- or entropy-order viscosity coefficient: when using the first-order viscosity (\eqt{eq:equation15}), an expression for $\kappa^*$ is: $\kappa^* = \frac{L}{2}\left( \vec{u^*} + c^* \right)$. By substituting this definition into \eqt{eq:cont_proof}, the following expression for the scaled continuity equation is obtained:
 \begin{equation}
-\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) = \left( 1 + \frac{1}{M^*} \right)  \tilde{\nabla} \cdot \left(\tilde{\kappa}\tilde{\nabla} \tilde{\rho} \right)
+\partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) = \frac{1}{2}\left( 1 + \frac{1}{M^*} \right)  \tilde{\nabla} \cdot \left(\tilde{\kappa}\tilde{\nabla} \tilde{\rho} \right)
 \end{equation}
 where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipative term will become ill-scaled and will alter the solution greatly
 when using the first-order viscosity. However, when employing the entropy-viscosity coefficient \eqt{eq:ent_visc_coeff} in the low Mach limit with 
