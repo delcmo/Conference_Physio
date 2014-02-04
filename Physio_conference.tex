@@ -162,9 +162,9 @@
 \begin{abstract}
 In this paper, we extend the entropy viscosity method \cite{valentin, jlg1, jlg2} to $1$-D Euler equations with source terms present. 
 The entropy viscosity method has been successfully applied to hyperbolic systems of equations such as Burgers equation and Euler
-equations. It method consists in adding dissipative terms to the governing equations so as to ensure the entropy minimum principle. The dissipative terms contain a viscosity coefficient that modulates locally the amount of dissipation.
+equations. This method consists in adding dissipative terms to the governing equations so as to ensure the entropy minimum principle. The dissipative terms contain a viscosity coefficient that modulates locally the amount of dissipation.
 This viscosity coefficient is based on the entropy production that occurs in discontinuities and shocks present in hyperbolic systems.
-By adding source terms to Euler equations (friction and gravity forces to the momentum equation and heat source/sink int he energy equation), the entropy viscosity method needs to be modified in order to account for the entropy production due to these terms. Tests are run for a 1D Pressurized Water Reactor channel using the MOOSE framework \cite{Moose}. the equation are discretized with a standard continuous Finite Element Method and a second-order temporal implicit scheme.
+By adding source terms to Euler equations (friction and gravity forces to the momentum equation and heat source/sink int he energy equation), the entropy viscosity method needs to be modified in order to account for the entropy production due to these terms. Tests are run for a 1D Pressurized Water Reactor channel using the MOOSE framework \cite{Moose}. The equation are discretized with a standard continuous Finite Element Method (linear polynomials) and a second-order temporal implicit scheme (BDF2). 
 \end{abstract}
 
 \keywords{Entropy-based viscosity scheme, Euler equations with source terms, viscous regularization, Low Mach flow}
@@ -186,7 +186,7 @@ viscosity method to fluid flow problems for nuclear reactor applications. Theref
 beyond Euler equations. Here, we analyze the implication of adding wall friction, gravity, and heat source/sink to the conservation equations.
 A 1D channel, with conditions representative of the ones of a PWR, is used in our numerical tests. This test case also presents the challenge
 of being in the low-Mach limit, an asymptotic region not yet tested with the entropy viscosity method. In Section~\ref{sec:section1}, we recall
-the fundamentals of the entropy viscosity method.  Its extension to Euler equations with friction forces, gravity forces, and heat sources/sinks is presented in Section~\ref{sec:ext}. Numerical results are provided in Section~\ref{sec:results}.
+the fundamentals of the entropy viscosity method.  Its extension to Euler equations with friction forces, gravity forces, and heat sources/sinks is presented in Section~\ref{sec:ext}. Numerical results are provided in Section~\ref{sec:results} with the entropy viscosity method and also with the SUPG stabilization method  \cite{SUPG} for comparison.
 
 
 %------------------------------------------------------------------------------
@@ -300,13 +300,13 @@ The definitions of the first order viscosity coefficients given in \eqt{eq:equat
 \section{Numerical results for a Pressurized Nuclear Reactor PWR}
 \label{sec:results}
 
-Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the wall temperature $T_w$ is set to a constant value of $600$ K, the heat transfer coefficient $h_w$ is time and space dependent, given in \eqt{eq:equation24}, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$.
-\begin{equation}
-\label{eq:equation24}
-h_w(x,t) = h_{w,0}(1-e^{-t})\sin \left( \frac{\pi}{2L} x\right) \text{ with } h_{w,0} = 5.33 \cdot 10^4 W / m.
-\end{equation}
-For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3600$ $kg/(m^2 s))$ and a fluid temperature ($T = 559.15$ K) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The Stiffened Gas Equation of State (SGEOS) is used \cite{SGEOS} with following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=30$ sec with a time step of $\Delta t = 1$ sec. Figure~\ref{fig:Pressure} through Figure~\ref{fig:Viscosity} present the results obtained using 20 mesh cells and using either the over-dissipative first-order viscosity  or the higher-order entropy viscosity to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct. Plots with a finer spatial resolution are also shown.
-
+Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/m$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is spatial dependent and computed using the model available in RELAP7 for PWR \cite{Relap7PWR}. 
+%the heat source is constant and set to $7.7E+4$ $W/m^3$. 
+%\begin{equation}
+%\label{eq:equation24}
+%h_w(x,t) = h_{w,0}(1-e^{-t})\sin \left( \frac{\pi}{2L} x\right) \text{ with } h_{w,0} = 5.33 \cdot 10^4 W / m.
+%\end{equation}
+For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3982$ $kg/(m^2 s))$ and a fluid temperature ($T = 559.15$ K) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The Stiffened Gas Equation of State (SGEOS) is used \cite{SGEOS} with following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figure~\ref{fig:Pressure} through Figure~\ref{fig:Viscosity} present the results obtained using 20 mesh cells and using either the over-dissipative first-order viscosity  or the higher-order entropy viscosity or SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to what is obtained with SUPG method. Plots with a finer spatial resolution ($100$ cells) are also shown.
 
 \begin{figure}[h]
 \centering
@@ -317,23 +317,24 @@ For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3600$
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{plots/Temperature.png}
-\caption{PWR test case: Temperature axial profile}
+\caption{PWR test case: temperature axial profile}
 \label{fig:Temperature}
 \end{figure}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{plots/Velocity.png}
-\caption{PWR test case: Velocity axial profile}
+\caption{PWR test case: velocity axial profile}
 \label{fig:Velocity}
 \end{figure}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{plots/Viscosity.png}
-\caption{PWR test case: Viscosity axial profile}
+\caption{PWR test case: viscosity axial profile}
 \label{fig:Viscosity}
 \end{figure}
+In \fig{fig:Pressure}, the steady-state pressure profile obtained with SUPG method shows a small non-physical change of slope at the outlet that disappear when a finer mesh is used. This artifact is not seen when using the entropy viscosity method. \\
 
-This paragraph aims at explaining why the first-order viscosity becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit for the continuity equation written with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations as well. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
+This paragraph aims at explaining why the first-order viscosity becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations as well. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
 \begin{equation}
 \rho = \tilde{\rho} \rho^* \text{, } u = \tilde{u} u^* \text{, } x = \tilde{x} L \text{, } t = \tilde{t} \frac{u^*}{L} \text{ and } \kappa = \tilde{\kappa} \kappa^* 
 \end{equation}
@@ -344,16 +345,26 @@ Using the above definition, the continuity equation yields:
 \end{equation}
 The coefficient $k^*$ depends upon using the first- or entropy-order viscosity coefficient: when using the first-order viscosity (\eqt{eq:equation15}), an expression for $\kappa^*$ is: $\kappa^* = \frac{L}{2}\left( \vec{u^*} + c^* \right)$. By substituting this definition into \eqt{eq:cont_proof}, the following expression for the scaled continuity equation is obtained:
 \begin{equation}
+\label{eq:cont_proof2}
 \partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) = \frac{1}{2}\left( 1 + \frac{1}{M^*} \right)  \tilde{\nabla} \cdot \left(\tilde{\kappa}\tilde{\nabla} \tilde{\rho} \right)
 \end{equation}
 where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipative term will become ill-scaled and will alter the solution greatly
 when using the first-order viscosity. However, when employing the entropy-viscosity coefficient \eqt{eq:ent_visc_coeff} in the low Mach limit with 
 $\tilde{P} = \rho^* (c^2)^* P$, the dissipative term is well-scaled:
 \begin{equation}
+\label{eq:cont_proof3}
 \partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \tilde{\nabla} \cdot  \left(\tilde{\kappa}\tilde{\nabla}  \tilde{\rho} \right).
 \end{equation}
-We can see that it is therefore critical to evaluate and, if needed adapt, the definition of the viscosity coefficients employed with the dissipative terms in a wide range of flow speeds.
+We can see that it is therefore critical to evaluate and, if needed adapt, the definition of the viscosity coefficients employed with the dissipative terms in a wide range of flow speeds. \\
+A good way to assess the impact of the dissipative terms onto the steady-state solution is to plot the momentum variable that is expected to be constant in the low Mach limit without mass source and under the condition of having well-scaled dissipative terms (\eqt{eq:cont_proof2} and \eqt{eq:cont_proof3}).
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{plots/Momentum.png}
+\caption{PWR test case: momentum axial profile}
+\label{fig:Momentum}
+\end{figure}
+From \fig{fig:Momentum}, it is clear that the momentum variable remains constant ($3982$ $m/s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the momentum variable displays a $7\%$ variation over the domain because of the $\frac{1}{M^*}$ coefficient in the dissipative term as shown in \eqt{eq:cont_proof2}.
 %------------------------------------------------------------------------------
 %
 %------------------------------------------------------------------------------
@@ -370,9 +381,9 @@ The steady-state solution is correctly resolved even with few spatial cells usin
 %------------------------------------------------------------------------------
 %
 %------------------------------------------------------------------------------
-%\section*{ACKNOWLEDGMENTS}
-%
-%If you want to thank somebody or something (maybe a funding organisation), do it here.
+\section*{ACKNOWLEDGMENTS}
+
+The authors would like to thank the RELAP7 team from Idaho National Laboratory for providing Relap-7 code and the the physical model used in this paper.
 
 %------------------------------------------------------------------------------
 % Bibliography. There are two ways to include the bibliography in your manu-
@@ -408,11 +419,15 @@ The steady-state solution is correctly resolved even with few spatial cells usin
 %\bibliographystyle{physor2014}
 %\bibliography{physor2014}
 
-\begin{thebibliography}{7}
+\begin{thebibliography}{10}
     
   \bibitem{Moose}
   \emph{A parallel computational framework for coupled systems of nonlinear equations},
   D. Gaston, C. Newsman, G. Hansen and D. Lebrun-Grandie, Nucl. Eng. Design, vol 239, pp 1768-1778, 2009.
+  
+  \bibitem{SUPG}
+  \emph{Finite element formulations for convection dominated flows with particular emphasis on the compressible Euler equations},
+  TE Tezduyar, TJR Hughes, Proceedings of the AIAA 21st Aerospace Sciences Meeting AIAA Paper 83-0125. Reno, Nevada, 1983.
   
   \bibitem{valentin}
   \emph{Implementation of the entropy viscosity method with the discontinuous Galerkin method},
@@ -434,6 +449,10 @@ The steady-state solution is correctly resolved even with few spatial cells usin
     \bibitem{Parabolic}
   \emph{On positivity preserving finite volume schemes for Euler equations},
   Perthane B. and Shu C-W., Numer. Math., 73(1):119-130, 1996.
+  
+  \bibitem{Relap7PWR}
+  \emph{RELAP-7 level 2 milestone report: demonstration of a steady-state single phase PWR simulation with RELAP-7}
+  D. Anders, R. Berry, D. Gaston, R. Martineau, J. Peterson, H. Zhang, H. Zhao, L. Zou, INL/EXT-12-25924, May 2012.
   
   \bibitem{SGEOS}
   \emph{Elaborating equation of state for a liquid and its vapor for two-phase flow models.}
