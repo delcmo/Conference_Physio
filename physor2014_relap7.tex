@@ -164,7 +164,7 @@ In this paper, we extend the entropy viscosity method \cite{valentin, jlg1, jlg2
 The entropy viscosity method has been successfully applied to hyperbolic systems of equations such as Burgers equation and Euler
 equations. This method consists in adding dissipative terms to the governing equations so as to ensure the entropy minimum principle. The dissipative terms contain a viscosity coefficient that modulates locally the amount of dissipation.
 This viscosity coefficient is based on the entropy production that occurs in discontinuities and shocks present in hyperbolic systems.
-By adding source terms to Euler equations (friction and gravity forces to the momentum equation and heat source/sink int he energy equation), the entropy viscosity method needs to be modified in order to account for the entropy production due to these terms. Tests are run for a 1D Pressurized Water Reactor channel using the MOOSE framework \cite{Moose}. The equation are discretized with a standard continuous Finite Element Method (linear polynomials) and a second-order temporal implicit scheme (BDF2). 
+By adding source terms to Euler equations (friction and gravity forces to the momentum equation and heat source/sink int he energy equation), the entropy viscosity method needs to be modified in order to account for the entropy production due to these terms. Tests are run for a 1D Pressurized Water Reactor channel using the RELAP-7 application of the MOOSE framework \cite{Moose}. The equations are discretized with a standard continuous Finite Element Method (linear polynomials) and a second-order temporal implicit scheme (BDF2). 
 \end{abstract}
 
 \keywords{Entropy-based viscosity scheme, Euler equations with source terms, viscous regularization, Low Mach flow}
@@ -175,11 +175,11 @@ By adding source terms to Euler equations (friction and gravity forces to the mo
 \section{Introduction}
 \label{sect::intro}
 
-Hyperbolic systems of equations are challenging to solve numerically, due to the presence of shocks. Godunov upwind schemes are overly
+Hyperbolic systems of equations are challenging to solve numerically due to the presence of shocks. Godunov upwind schemes, although monotonic,  are overly
 dissipative and only first-order accurate, while higher order methods need flux  limiters to prevent unphysical oscillations. Recently,
 a new technique to stabilize hyperbolic equations has been introduced \cite{valentin, jlg1, jlg2} . 
 It requires adding artificial dissipation terms to the equations while ensuring that the entropy minimum principle remains satisfied. 
-This technique, coined entropy viscosity method, is independent of the spatial discretization and thus can be used with a standard 
+This technique, named entropy viscosity method, is independent of the spatial discretization and thus can be used with a standard 
 Galerkin Finite Element Method (FEM). Many FEM software possess advanced functionalities for continuous FEM (e.g., deal.ii, libmesh).
 We have developed our fluid solver with Idaho National Laboratory's MOOSE framework \cite{Moose}, with the goal of applying the entropy 
 viscosity method to fluid flow problems for nuclear reactor applications. Therefore, it is crucial to stress the capabilities of the method
@@ -300,13 +300,14 @@ The definitions of the first order viscosity coefficients given in \eqt{eq:equat
 \section{Numerical results for a Pressurized Nuclear Reactor PWR}
 \label{sec:results}
 
-Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/m$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is spatial dependent and computed using the model available in RELAP7 for PWR \cite{Relap7PWR}. 
+Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854\times 10^{-05}$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33\times 10^4$ $W/m$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is spatially dependent and computed using the model available in RELAP7 for PWR \cite{Relap7PWR}. 
 %the heat source is constant and set to $7.7E+4$ $W/m^3$. 
 %\begin{equation}
 %\label{eq:equation24}
 %h_w(x,t) = h_{w,0}(1-e^{-t})\sin \left( \frac{\pi}{2L} x\right) \text{ with } h_{w,0} = 5.33 \cdot 10^4 W / m.
 %\end{equation}
-For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3982$ $kg/(m^2 s))$ and a fluid temperature ($T = 559.15$ K) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The Stiffened Gas Equation of State (SGEOS) is used \cite{SGEOS} with following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figure~\ref{fig:Pressure} through Figure~\ref{fig:Viscosity} present the results obtained using 20 mesh cells and using either the over-dissipative first-order viscosity  or the higher-order entropy viscosity or SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to what is obtained with SUPG method. Plots with a finer spatial resolution ($100$ cells) are also shown.
+For boundary conditions, we impose, at the inlet, the mass flow rate ($\rho u = 3982$ $kg/(m^2.s))$ and the fluid temperature ($T = 559.15$ K); we use a static pressure condition at the exit ($P_s = 155$ bar) . The Stiffened Gas Equation of State (SGEOS) is used \cite{SGEOS} with following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151\times^3$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K.kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. The 1D channel is discretized using 20 cells. Figure~\ref{fig:Pressure} through Figure~\ref{fig:Viscosity} present the results obtained either the over-dissipative first-order viscosity or the higher-order entropy viscosity or the SUPG method currently implemented in RELAP-7. From these figures, it is clear that employing a first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and in very good agreement with the ones obtained using the SUPG scheme. Plots with a finer spatial resolution ($100$ cells) are also shown. 
+% Note that there is a slight slope discontinuity in the outlet pressure profile (\fig{fig:Pressure}) using SUPG; this discontinuity is not present when employing the entropy-viscosity method.
 
 \begin{figure}[h]
 \centering
@@ -332,9 +333,9 @@ For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3982$
 \caption{PWR test case: viscosity axial profile}
 \label{fig:Viscosity}
 \end{figure}
-In \fig{fig:Pressure}, the steady-state pressure profile obtained with SUPG method shows a small non-physical change of slope at the outlet that disappear when a finer mesh is used. This artifact is not seen when using the entropy viscosity method. \\
+In \fig{fig:Pressure}, the steady-state pressure profile obtained with SUPG presents a small non-physical change in slope at the outlet. This discontinuity disappears when a finer mesh is used. This artifact is not seen when using the entropy viscosity method, even on coarse grids.. \\
 
-This paragraph aims at explaining why the first-order viscosity becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations as well. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
+Next, we used an asymptotic argument to show that the first-order viscosity scheme becomes ill-scaled in the low-Mach limit. Indeed, in the test case under consideration, the flow speed  is around 5 m/s while the speed of sound is around 1,500 m/s. We carry out a low-Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied to the momentum and energy equations as well. The first step consists of defining dimensionless variables (with a $\tilde{\cdot}$) as follows:
 \begin{equation}
 \rho = \tilde{\rho} \rho^* \text{, } u = \tilde{u} u^* \text{, } x = \tilde{x} L \text{, } t = \tilde{t} \frac{u^*}{L} \text{ and } \kappa = \tilde{\kappa} \kappa^* 
 \end{equation}
@@ -350,13 +351,13 @@ The coefficient $k^*$ depends upon using the first- or entropy-order viscosity c
 \end{equation}
 where $M^*$ is a reference Mach number. Thus, in the low Mach limit, the dissipative term will become ill-scaled and will alter the solution greatly
 when using the first-order viscosity. However, when employing the entropy-viscosity coefficient \eqt{eq:ent_visc_coeff} in the low Mach limit with 
-$\tilde{P} = \rho^* (c^2)^* P$, the dissipative term is well-scaled:
+$\tilde{P} = \rho^* (c^2)^* P$, the dissipative term is well-scaled and we have
 \begin{equation}
 \label{eq:cont_proof3}
 \partial_{\tilde{t}} \tilde{\rho} + \tilde{\nabla} \cdot \left( \tilde{\rho} \vec{\tilde{u}} \right) =  \tilde{\nabla} \cdot  \left(\tilde{\kappa}\tilde{\nabla}  \tilde{\rho} \right).
 \end{equation}
-We can see that it is therefore critical to evaluate and, if needed adapt, the definition of the viscosity coefficients employed with the dissipative terms in a wide range of flow speeds. \\
-A good way to assess the impact of the dissipative terms onto the steady-state solution is to plot the momentum variable that is expected to be constant in the low Mach limit without mass source and under the condition of having well-scaled dissipative terms (\eqt{eq:cont_proof2} and \eqt{eq:cont_proof3}).
+We can see that it is therefore critical to evaluate and, if needed adapt, the definition of the viscosity coefficients employed with the dissipative terms for a wide range of flow speeds. \\
+The impact of the dissipative terms can also be seen by analyzing the momentum variable of the steady-state solution. At steady state, in a pipe with a fixed area, momentum is expected to be constant. This property should also be recover from the numerical solution, when the dissipative terms scaled correctly in the low-Mach limit (\eqt{eq:cont_proof2} and \eqt{eq:cont_proof3}).
 
 \begin{figure}[h]
 \centering
@@ -364,7 +365,7 @@ A good way to assess the impact of the dissipative terms onto the steady-state s
 \caption{PWR test case: momentum axial profile}
 \label{fig:Momentum}
 \end{figure}
-From \fig{fig:Momentum}, it is clear that the momentum variable remains constant ($3982$ $m/s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the momentum variable displays a $7\%$ variation over the domain because of the $\frac{1}{M^*}$ coefficient in the dissipative term as shown in \eqt{eq:cont_proof2}.
+From \fig{fig:Momentum}, it is clear that the momentum variable remains constant ($3,982$ $m/s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the momentum variable displays a $7\%$ variation over the domain because of the $\frac{1}{M^*}$ coefficient in the dissipative term as shown in \eqt{eq:cont_proof2}.
 %------------------------------------------------------------------------------
 %
 %------------------------------------------------------------------------------
@@ -373,17 +374,17 @@ From \fig{fig:Momentum}, it is clear that the momentum variable remains constant
 
 We have extended the entropy viscosity method to fluid conservation equations (Euler equations) that contains terms pertaining to wall friction, gravity, and heat source/sink. This was achieved by verifying that the entropy minimum principle is still verified, provided that the definition of the entropy residual be amended to include the contribution of the heat source/sink terms. 
 
-We have applied the newly adapted technique to a 1D pipe problem representative of a PWR channel under normal operating conditions. The artificial dissipative terms do not alter the physical solution when the higher-order viscosity coefficient is used. However, the solution with the first-order viscosity is no correct.
+We have applied the newly adapted technique to a 1D pipe problem representative of a PWR channel under normal operating conditions. The artificial dissipative terms do not alter the physical solution when the higher-order viscosity coefficient is used. However, the solution with the first-order viscosity is not correct.
 The first-order viscosity definition resulted in that term being ill-scaled in the low-Mach limit. However, the entropy viscosity coefficient did not show such ill-scaling as Mach $\rightarrow 0$ .
 
-The steady-state solution is correctly resolved even with few spatial cells using a continuous finite element approach implement in the MOOSE software.
+The steady-state solution is correctly resolved even with few spatial cells using a continuous finite element approach implement in the RELAP7-MOOSE application.
 
 %------------------------------------------------------------------------------
 %
 %------------------------------------------------------------------------------
 \section*{ACKNOWLEDGMENTS}
 
-The authors would like to thank the RELAP7 team from Idaho National Laboratory for providing Relap-7 code and the the physical model used in this paper.
+The authors would like to thank the RELAP7 team from Idaho National Laboratory for providing access to RELAP-7 and for the physical models used in this paper. 
 
 %------------------------------------------------------------------------------
 % Bibliography. There are two ways to include the bibliography in your manu-
