@@ -13,3 +13,5 @@
 *.csv
 *.xlsx
 *.gz
+*.pdf
+*.out
