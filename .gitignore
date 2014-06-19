@@ -15,3 +15,4 @@
 *.gz
 *.pdf
 *.out
+.DS_Store
