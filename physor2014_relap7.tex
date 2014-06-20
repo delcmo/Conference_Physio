@@ -301,29 +301,33 @@ Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ 
 %\label{eq:equation24}
 %h_w(x,t) = h_{w,0}(1-e^{-t})\sin \left( \frac{\pi}{2L} x\right) \text{ with } h_{w,0} = 5.33 \cdot 10^4 W / m.
 %\end{equation}
-For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3982$ $kg/(m^2 s))$ and a fluid temperature ($T = 559.15$ K) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity, the higher-order entropy viscosity, or the SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
+For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($h = 1.28e6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Pressure.png}
+%\includegraphics[scale=0.4]{plots/Pressure.png}
+\includegraphics[scale=0.4]{plots/PWR_stt_pressure.png}
 \caption{PWR test case: axial pressure profile}
 \label{fig:Pressure}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Temperature.png}
+%\includegraphics[scale=0.4]{plots/Temperature.png}
+\includegraphics[scale=0.4]{plots/PWR_stt_temperature.png}
 \caption{PWR test case: axial temperature profile}
 \label{fig:Temperature}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Velocity.png}
+%\includegraphics[scale=0.4]{plots/Velocity.png}
+\includegraphics[scale=0.4]{plots/PWR_stt_velocity.png}
 \caption{PWR test case: axial velocity profile}
 \label{fig:Velocity}
 \end{figure}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Viscosity.png}
+%\includegraphics[scale=0.4]{plots/Viscosity.png}
+\includegraphics[scale=0.4]{plots/PWR_stt_viscosity.png}
 \caption{PWR test case: axial viscosity profile}
 \label{fig:Viscosity}
 \end{figure}
@@ -356,11 +360,12 @@ A good way to assess the impact of the dissipative terms on the steady-state sol
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{plots/Momentum.png}
+%\includegraphics[scale=0.4]{plots/Momentum.png}
+\includegraphics[scale=0.4]{plots/PWR_stt_momentum.png}
 \caption{PWR test case: axial mass flux (or momentum) profile}
 \label{fig:Momentum}
 \end{figure}
-This is shown in \fig{fig:Momentum}, where it is clear that the mass flux (or momentum density) remains constant ($3982$ $kg/m^2s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the steady-state mass flux displays a $7\%$ variation over the domain because of the $\frac{1}{M^*}$ coefficient in the dissipative term of \eqt{eq:cont_proof2}.
+This is shown in \fig{fig:Momentum}, where it is clear that the mass flux (or momentum density) remains constant ($0.2953$ $kg/m^2s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the steady-state mass flux displays a $10\%$ variation over the domain because of the $\frac{1}{M^*}$ coefficient in the dissipative term of \eqt{eq:cont_proof2}.
 %------------------------------------------------------------------------------
 %
 %------------------------------------------------------------------------------
