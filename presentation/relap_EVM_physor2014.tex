@@ -16,7 +16,9 @@
 \usepackage{lscape} %utilisation du mode paysage
 %\usepackage{pslatex}
 \usepackage{url}
-\usepackage{subfigure}
+%\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \usepackage{graphicx}
 \usepackage{tabls}
@@ -266,19 +268,46 @@ v_e := h \frac{|R_e(x_q)|_K}{|s-\overline{s}|_\infty}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame} 
+%\begin{frame} 
+%\frametitle{Example: Burgers equation}
+%\begin{figure}
+%	\includegraphics[height=7cm, keepaspectratio=true]{figs/burgers0000.png}
+%\end{figure}
+%\end{frame}
+%
+%\begin{frame} 
+%\begin{figure}
+%	\includegraphics[height=7cm, keepaspectratio=true]{figs/burgers20000.png}
+%\end{figure}
+%\end{frame}
+
+\begin{frame}
 \frametitle{Example: Burgers equation}
 \begin{figure}
-	\includegraphics[height=7cm, keepaspectratio=true]{figs/burgers0000.png}
+        \centering
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/1D_sol_free.png}
+                \caption{Without stabilization.}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/1D_sol_fo.png}
+                \caption{With first-order viscosity.}
+        \end{subfigure}
+        
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/1D_sol_ev.png}
+                \caption{With the EVM.}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/1D_visc.png}
+                \caption{Viscosity coefficient profiles.}
+        \end{subfigure}
 \end{figure}
 \end{frame}
-
-\begin{frame} 
-\begin{figure}
-	\includegraphics[height=7cm, keepaspectratio=true]{figs/burgers20000.png}
-\end{figure}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -520,7 +549,7 @@ However, we want to keep the all-speed aspect of the flow solver, so
 \end{equation} 
 \text{and} 
 \begin{equation}
-\kappa^K_e(\vec{r},t) = h_K^2 \frac{ | \resinew^K(\vec{r}_q,t) | }{ \rho_\infty c_\infty^2 } \, .
+\kappa^K_e(\vec{r},t) = h_K^2 \frac{ | \resinew^K(\vec{r}_q,t) | }{\textcolor{magenta}{b(M) \rho \|\vec{u}\|^2 + (1-b(M)) \rho c^2}} \, .
 \end{equation}
 \end{subequations}
 
