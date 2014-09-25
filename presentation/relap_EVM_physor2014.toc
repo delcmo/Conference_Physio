@@ -1,0 +1,14 @@
+\beamer@endinputifotherversion {3.10pt}
+\beamer@sectionintoc {1}{Background and Motivation}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Relap-7: a Next-generation nuclear reactor safety code}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Density-based (compressible) Solvers for Low-Mach Flow Problems}{5}{0}{1}
+\beamer@sectionintoc {2}{A Brief Review of the Entropy Viscosity Method for Conservation Laws}{6}{0}{2}
+\beamer@subsectionintoc {2}{1}{Basic Idea}{6}{0}{2}
+\beamer@subsectionintoc {2}{2}{Application to the Entropy Viscosity Method to the Euler Equations}{9}{0}{2}
+\beamer@sectionintoc {3}{Extension of the Entropy Viscosity Method to Low-Mach Flows}{12}{0}{3}
+\beamer@subsectionintoc {3}{1}{New Formulation of the Entropy Residual}{12}{0}{3}
+\beamer@subsectionintoc {3}{2}{Numerical Results}{15}{0}{3}
+\beamer@sectionintoc {4}{Pressurized Nuclear Reactor (PWR) Model}{17}{0}{4}
+\beamer@subsectionintoc {4}{1}{PWR Model}{17}{0}{4}
+\beamer@subsectionintoc {4}{2}{Numerical Results}{18}{0}{4}
+\beamer@sectionintoc {5}{Conclusions and Outlook}{21}{0}{5}

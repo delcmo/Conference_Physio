@@ -391,7 +391,7 @@ We \tcb{determine the upper bounds} of these entropy-based viscosities by introd
 \label{eq:fo}
 \mu_{\max}(\vec{r}, t) = \kappa_{\max}(\vec{r}, t) = 0.5 h  \left( || \vec{u}(\vec{t,r}) || + c(\vec{t,r}) \right),
 \end{equation}
-If $\mu_{\max}$ and $\kappa_{\max}$ are used, the discretization is equivalent to a first-order Godunov scheme.
+If $\mu_{\max}$ and $\kappa_{\max}$ are used, the discretization scheme is over-dissipative and first-order.
 \end{block}
 %
 
@@ -472,7 +472,7 @@ Recall that
 Requirements
 \begin{enumerate}
 \item To recover the incompressible results in the low-Mach limit %(i.e., pressure fluctuations $\propto M^2$; divergence-free flow; incompressible continuity equation)
-\item To remain valid and accurate in for supersonic flows
+\item To remain valid and accurate for supersonic flows
 \end{enumerate}
 \textcolor{red}{Asymptotic analysis} to determine the proper scaling in the low-Mach limit.
 
@@ -520,7 +520,7 @@ However, we want to keep the all-speed aspect of the flow solver, so
 \end{equation} 
 \text{and} 
 \begin{equation}
-\kappa^K_e(\vec{r},t) = h_K^2 \frac{ | \resinew^K(\vec{r}_q,t) | }{\textcolor{magenta}{b(M) \rho \|\vec{u}\|^2 + (1-b(M)) \rho c^2}}  \, .
+\kappa^K_e(\vec{r},t) = h_K^2 \frac{ | \resinew^K(\vec{r}_q,t) | }{ \rho_\infty c_\infty^2 } \, .
 \end{equation}
 \end{subequations}
 
@@ -538,7 +538,7 @@ However, we want to keep the all-speed aspect of the flow solver, so
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame} 
-\frametitle{Fluid flow over a 2-D cylinder at various inlet Mach values (CFL=40)}
+\frametitle{Fluid flow over a 2-D cylinder with an inlet Mach of $10^{-7}$ (CFL=40)}
 %At steady state:
 %\begin{figure}
 	%\includegraphics[height=6cm, keepaspectratio=true]{figs/CylinderMach1em3ZoomIn.png}
@@ -599,13 +599,13 @@ Extension of the entropy viscosity method to include friction, gravity, and sink
 \begin{block}{Governing Laws}
 \begin{subequations}
 \begin{equation}
-\partial_t \rho + \nabla  \cdot \left( \rho u \right) = 0 
+\partial_t \rho + \partial_x\left( \rho u \right) = 0 
 \end{equation}
 \begin{equation}
-\partial_t \left( \rho u \right) + \nabla \cdot \left( \rho u^2 + P \right) =  \tcb{- \frac{A}{2 D_h} \rho f |u| u - \rho g }
+\partial_t \left( \rho u \right) + \partial_x\left( \rho u^2 + P \right) =  \tcb{- \frac{A}{2 D_h} \rho f |u| u - \rho g }
 \end{equation}
 \begin{equation}
-\partial_t \left( \rho E \right) + \nabla \cdot \left[ u  \left( \rho E + P \right) \right] =\tcb{ a_w h_w \left( T - T_w \right) - \rho g u}
+\partial_t \left( \rho E \right) + \partial_x\left[ u  \left( \rho E + P \right) \right] =\tcb{ a_w h_w \left( T - T_w \right) - \rho g u}
 \end{equation}
 \end{subequations}
 \end{block}
@@ -640,7 +640,7 @@ We require entropy residual to grow (min. entropy principle, $\matder{s}=\partia
 \begin{itemize}
 %\setlength{\itemsep}{10pt}
 \item A single $1$-D channel % pipe of cross section $A=7.845 \times 10^{-5}$ $m^2$ and length $L = 3.865$ $m$.
-\item Wall friction, gravity, and wall heat source $Q_w = h_t p_w (T_{liq} - T_w)$ % with $h_t = 5.33 \times 10^4$ $W/m$, $p_w = 2.82$ $mm$.
+\item Wall friction, gravity, and wall heat source $Q_w = h_t a_w (T_{liq} - T_w)$ % with $h_t = 5.33 \times 10^4$ $W/m$, $a_w = 2.82$ $mm$.
 \item Wall temperature $T_w$ is a function of height %and computed from the model available in RELAP-7: fuel, gap and clad with a constant power $P = 7.7 \times 10^3$ $kW / m^3$.
 \item Inlet BC: specify total enthalpy ($H$) and momentum ($\rho u$).
 \item Outlet BC: static pressure boundary with $P_s = 155$ $bar$.
@@ -728,7 +728,7 @@ We require entropy residual to grow (min. entropy principle, $\matder{s}=\partia
 \item Extended the entropy viscosity method to low-Mach flows
 \item Extended the entropy viscosity method to fluid governing laws with wall heat source, wall friction, and gravity forces
 \item Presented numerical results using a \emph{continuous} FEM spatial discretization and an implicit (BDF2) temporal integration
-\item Method is a RELAP-7,  a MOOSE-based application of the INL
+\item Method is a RELAP-7, a MOOSE-based application of the INL
 \een
 \end{block}
 
