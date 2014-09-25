@@ -139,7 +139,7 @@ Current industry standard: RELAP-5 (mod 3.2)\\
 \begin{itemize}
 \item 6-equation two-phase flow model with time- and volume-averaged equations. The 6-eq model is ill-posed (non hyperbolic) and needs artificial viscosity and surface tension to be well-posed.
 \item Semi-implicit in time with staggered spatial grids (momentum grid half-shifted from the mass/energy grid)
-\item Original model developed in the late 1970s-early 1980s with continued enhancements since then.
+\item Original model developed in the mid 1970s-early 1980s with continued enhancements since then.
 \end{itemize}
 
 \begin{block}{\tcm{Relap-7}: next-generation reactor safety code}
@@ -206,7 +206,7 @@ To solve them using \textcolor{red}{{\it continuous} FEM} using MOOSE
 \begin{block}{All-speed fluid flow solver}
 Low-Mach: huge disparity in speeds (pressure waves move much faster)\\
 \hspace{0.5cm} $\bullet$ Severely CFL-constrained if using explicit time-stepping\\
-\hspace{0.5cm} $\bullet$ Have to use \tcr{implicit} time stepping \\
+\hspace{0.5cm} $\bullet$ Best to use \tcr{implicit} time stepping \\
 \hspace{0.5cm} $\bullet$ Nonlinear system of equations \\%(preconditioner: pressure-correction ICE, for example)\\
 \hspace{0.5cm} $\bullet$ Fits the JFNK formalism in MOOSE where all physic components are tightly coupled \\
 \end{block}
